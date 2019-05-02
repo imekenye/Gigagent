@@ -6,6 +6,9 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     UPLOADED_PHOTOS_DEST = 'app/static/photos'
     CSRF_ENABLED = True
+    WHOOSH_BASE = os.path.join(basedir, 'search.db')
+    MAX_SEARCH_RESULTS = 50
+
     #  email configurations
 
 
