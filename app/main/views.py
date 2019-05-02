@@ -4,6 +4,8 @@ from .. import db
 from flask_login import login_required
 from ..models import User
 from forms import ArtistSearchForm
+from config import MAX_SEARCH_RESULTS
+
 
 @main.route('/')
 def index():
