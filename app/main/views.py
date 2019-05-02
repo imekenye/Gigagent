@@ -31,3 +31,10 @@ def search():
     if not g.search_form.validate_on_submit():
         return redirect(url_for('index'))
     return redirect(url_for('search_results', query=g.search_form.search.data))
+
+
+@app.route('/search_results/<query>')
+@login_required
+def search_results(query):
+    results = Post.query.whoosh_search(query, MAX_SEARCH_RESULTS).all()
+    return render_template('search_results.html', query=query, results=results)
