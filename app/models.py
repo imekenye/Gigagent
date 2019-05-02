@@ -3,6 +3,12 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 from datetime import datetime
+import sys
+if sys.version_info >= (3, 0):
+    enable_search = False
+else:
+    enable_search = True
+    import flask_whooshalchemy as whooshalchemy
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -45,3 +51,17 @@ class Role(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
+
+#the artist class inherits from user class
+class Artist(User):
+    __searchable__ = ['body']
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Post %r>' % (self.body)
+
+if enable_search:
+    whooshalchemy.whoosh_index(app, Artist)
